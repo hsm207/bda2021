@@ -29,5 +29,6 @@
         "console_right_on_top": true
     },
     "editor_theme": "Solarized Dark",
-    "posix_terminal_shell": "bash"
+    "posix_terminal_shell": "bash",
+    "rmd_viewer_type": "pane"
 }
