@@ -1,0 +1,202 @@
+---
+title: "BDA - Assignment 1"
+author: "Anonymous"
+output: 
+  html_notebook:
+    toc: yes
+    toc_depth: '1'
+    df_print: paged
+---
+
+# Questions
+
+See here: https://avehtari.github.io/BDA_course_Aalto/assignments/assignment1.pdf
+
+# Question 2
+
+## a)
+
+```{r}
+# the mean of the beta distribution
+m <- 0.2
+
+# the variance of the beta distribution
+v <- 0.001
+```
+
+
+```{r}
+alpha <- m * ((m * (1 - m) / v) - 1)
+beta <- alpha * (1 - m) / m
+```
+
+```{r}
+x <- seq(0, 1, 1/100)
+y <- dbeta(x, alpha, beta)
+
+plot(x, y)
+```
+
+## b)
+
+```{r}
+X <- rbeta(1000, alpha, beta)
+hist(X, freq = FALSE)
+```
+
+## c)
+
+```{r}
+sample_mean <- mean(X)
+sample_var <- var(X)
+
+cat(abs(sample_mean - m), "\n")
+cat(abs(sample_var == v), "\n")
+```
+
+
+## d)
+
+```{r}
+quantile(X, c(5/100, 95/100))
+```
+# Question 3
+
+Extracted probabilities from the problem:
+
+```{r}
+prob_pos_given_lungcancer <- 98/100
+prob_neg_given_nolungcancer <- 96/100
+prob_lungcancer <- 1/1000
+```
+Verify the probabilities from the given hints:
+
+```{r}
+prob_pos_given_nolungcancer <- 1 - prob_neg_given_nolungcancer
+abs(prob_pos_given_nolungcancer - 4/100) < 1/1000
+```
+
+```{r}
+prob_pos_and_lungcancer <- prob_pos_given_lungcancer * prob_lungcancer
+
+abs(prob_pos_and_lungcancer - 0.098/100) < 1/1000
+```
+Calculate probability of false negative i.e probability negative given cancer:
+
+```{r}
+prob_false_neg <- 1 - prob_pos_given_lungcancer
+prob_false_neg
+```
+
+Calculate probability of false positive i.e. probability positive given no cancer:
+
+```{r}
+prob_false_pos <- prob_pos_given_nolungcancer
+prob_false_pos
+```
+Probability have cancer given negative result:
+
+```{r}
+prob_nolungcancer <- 1 - prob_lungcancer 
+prob_pos_and_nolungcancer <- prob_pos_given_nolungcancer * prob_nolungcancer
+
+prob_pos <- prob_pos_and_lungcancer + prob_pos_and_nolungcancer
+prob_neg <- 1 - prob_pos
+
+prob_neg_given_lungcancer <- 1 - prob_pos_given_lungcancer
+prob_neg_and_lungcancer <- prob_neg_given_lungcancer * prob_lungcancer
+
+prob_lungcancer_given_neg <- prob_neg_and_lungcancer/prob_neg
+prob_lungcancer_given_neg
+```
+Therefore, probability lung cancer does not get detected is almost 0.
+
+Probability have cancer given positive result:
+
+```{r}
+prob_lungcancer_given_pos <- prob_pos_and_lungcancer/prob_pos
+prob_lungcancer_given_pos
+```
+Therefore, probability un-necessarily administer medication is about 2.3%.
+
+# Question 4
+
+
+```{r}
+p_red <- function(boxes){
+  prob_A <- 0.4
+  prob_B <- 0.1
+  prob_C <- 1 - (prob_A + prob_B)
+
+  box_totals <- apply(boxes, 1, sum)
+  
+  prob_red_and_A <- boxes["A", "red"]/box_totals["A"] * prob_A
+  prob_red_and_B <- boxes["B", "red"]/box_totals["B"] * prob_B
+  prob_red_and_C <- boxes["C", "red"]/box_totals["C"] * prob_C
+
+  prob_red_and_A + prob_red_and_B + prob_red_and_C
+}
+```
+
+```{r}
+p_box <- function(boxes) {
+  prob_A <- 0.4
+  prob_B <- 0.1
+  prob_C <- 1 - (prob_A + prob_B)
+
+  box_totals <- apply(boxes, 1, sum)
+
+  prob_red_and_A <- boxes["A", "red"]/box_totals["A"] * prob_A
+  prob_red_and_B <- boxes["B", "red"]/box_totals["B"] * prob_B
+  prob_red_and_C <- boxes["C", "red"]/box_totals["C"] * prob_C
+
+  prob_red <- prob_red_and_A + prob_red_and_B + prob_red_and_C
+
+  prob_A_given_red <- prob_red_and_A / prob_red
+  prob_B_given_red  <- prob_red_and_B / prob_red
+  prob_C_given_red <- prob_red_and_C / prob_red
+
+  c(prob_A_given_red, prob_B_given_red, prob_C_given_red)
+}
+```
+# Question 5
+
+From the problem:
+
+```{r}
+# can be different sex
+prob_frat <- 1/150
+
+# must be same sex
+prob_ident <- 1/400
+
+prob_boy <- 1/2
+prob_girl <- 1 - prob_boy
+```
+
+Elvis had a twin brother.
+
+Probability Elvis is an identical twin????
+
+```{r}
+p_identical_twin <- function(fraternal_prob, identical_prob){
+
+}
+```
+
+# Check Answer
+
+```{r}
+library(markmyassignment)
+
+assignment_path <-
+  paste(
+    "https://github.com/avehtari/BDA_course_Aalto/",
+    "blob/master/assignments/tests/assignment1.yml",
+    sep = ""
+  )
+set_assignment(assignment_path)
+mark_my_assignment()
+
+```
+
