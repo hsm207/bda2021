@@ -15,7 +15,7 @@
 	},
 
 	// Add the IDs of extensions you want installed when the container is created.
-	"extensions": ["eamodio.gitlens", "github.vscode-pull-request-github"],
+	"extensions": ["eamodio.gitlens", "github.vscode-pull-request-github", "ikuyadeu.r"],
 	
 	"containerEnv": {
 		"DISABLE_AUTH": "true"
