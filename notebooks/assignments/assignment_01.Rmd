@@ -1,7 +1,7 @@
 ---
 title: "BDA - Assignment 1"
 author: "Anonymous"
-output: 
+output:
   html_notebook:
     toc: yes
     toc_depth: '1'
@@ -176,11 +176,27 @@ prob_girl <- 1 - prob_boy
 
 Elvis had a twin brother.
 
-Probability Elvis is an identical twin????
+Find probability Elvis is an identical twin given sibling is a boy:
 
 ```{r}
 p_identical_twin <- function(fraternal_prob, identical_prob){
+  # Note: you == Elvis
+  prob_you_identical <- identical_prob
+  prob_you_fraternal <- fraternal_prob
 
+  prob_boy_sibling_given_you_identical <- 1
+  prob_boy_sibling_given_you_fraternal <- prob_boy
+
+  prob_you_identical_and_boy_sibling <- prob_boy_sibling_given_you_identical * prob_you_identical
+  
+  prob_boy_sibling_and_you_identical <- prob_you_identical_and_boy_sibling
+  prob_boy_sibling_and_you_fraternal <- prob_boy_sibling_given_you_fraternal * prob_you_fraternal
+
+  prob_boy_sibling <- prob_boy_sibling_and_you_identical + prob_boy_sibling_and_you_fraternal
+
+  prob_you_identical_given_boy_sibling <- prob_you_identical_and_boy_sibling/prob_boy_sibling
+  
+  return(prob_you_identical_given_boy_sibling)
 }
 ```
 
